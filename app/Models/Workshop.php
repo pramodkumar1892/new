@@ -17,7 +17,7 @@ class Workshop extends Model
         'name'
     ];
 
-    public function event()
+    public function events()
     {
         return $this->belongsTo('App\Models\Event');
     }
