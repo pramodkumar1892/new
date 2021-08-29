@@ -97,11 +97,12 @@ class EventsController extends BaseController
     ]
      */
 
-    public function getEventsWithWorkshops() {
+    public function getEventsWithWorkshops()
+    {
 
         $result = Event::with('workshops')->get();
 
-        if($result) {
+        if ($result) {
             return response($result, config('constants.SUCCESS'));
         } else {
             return response(['error' => 'NOT_FOUND'], config('constants.NO_CONTENT'));
@@ -185,13 +186,14 @@ class EventsController extends BaseController
     ```
      */
 
-    public function getFutureEventsWithWorkshops() {
+    public function getFutureEventsWithWorkshops()
+    {
 
-        $result = Workshop::with('events')
-            ->where('start', '>=', date('Y-m-d'))
-            ->get();
+        $result = Event::whereHas('workshops', function ($query) {
+            $query->where('start', '>=', date('Y-m-d'));
+        })->get();
 
-        if($result) {
+        if ($result) {
             return response($result, config('constants.SUCCESS'));
         } else {
             return response(['error' => 'NOT_FOUND'], config('constants.NO_CONTENT'));
